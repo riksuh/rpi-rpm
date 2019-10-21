@@ -1,4 +1,5 @@
 from typing import Callable, Optional, Union
+from inspect import signature
 
 from werkzeug.exceptions import HTTPException
 from werkzeug.wrappers import Request, Response
@@ -16,8 +17,10 @@ class BaseServer():
 
     def route(self, location: str) -> Callable:
         def wrapper(func: Callable[[Optional[Request]], Response]):
-            func_name = func.__name__ + "_callback"
-            setattr(self, func_name, func)
+            func_name = func.__name__
+            if getattr(self, func_name, None) is None:
+                func_name = func.__name__ + "_callback"
+                setattr(self, func_name, func)
             rule = Rule(location, endpoint=func_name)
             self._routes.add(rule)
             return func
@@ -27,6 +30,13 @@ class BaseServer():
         adapter = self._routes.bind_to_environ(request.environ)
         try:
             endpoint, values = adapter.match()
-            return getattr(self, endpoint)(request, **values)
+            func = getattr(self, endpoint)
+            argcount = len(signature(func).parameters)
+            if argcount == len(values) + 1:
+                return func(request, **values)
+            elif argcount == len(values):
+                return func(**values)
+            else:
+                return func()
         except HTTPException as e:
             return e
