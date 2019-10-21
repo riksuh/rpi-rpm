@@ -24,5 +24,6 @@ def main():
 @click.option("--reload", "-r", is_flag=True,
               help="Reload the server if it detects changes to local files")
 def run(bind: str, debug: bool, reload: bool):
-    hostname, port = bind.split(":", 1)
-    run_simple(hostname, int(port), wsgi_server, use_reloader=reload, use_debugger=debug)
+    hostname, delim, port = bind.partition(":")
+    run_simple(hostname, 80 if len(port) == 0 else int(port), wsgi_server,
+               use_reloader=reload, use_debugger=debug)
