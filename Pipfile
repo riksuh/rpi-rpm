@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"rpi.gpio" = "*"
+gpiozero = "*"
+werkzeug = "*"
+
+[dev-packages]
+mypy = "*"
+flake8 = "*"
+
+[requires]
+python_version = "3.7"
