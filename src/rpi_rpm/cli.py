@@ -16,7 +16,7 @@ def main():
 
 
 @main.command(context_settings=GLOBAL_CONTEXT_SETTINGS,
-              help="Run the app using werkzeug's built-in (development) server")
+              help="Run the server using werkzeug's built-in (development) server")
 @click.option("--debug", "-d", is_flag=True,
               help="Start the server in debug mode")
 @click.option("--bind", "-b", default="localhost:7000", type=str, show_default=True,
