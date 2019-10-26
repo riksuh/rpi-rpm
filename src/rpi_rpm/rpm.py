@@ -5,6 +5,7 @@ from typing import Dict
 
 from gpiozero import DigitalInputDevice, DigitalOutputDevice
 from werkzeug.wrappers import Response
+from werkzeug.utils import redirect
 
 
 class RemotePowerModule(BaseServer):
@@ -47,16 +48,16 @@ def create_rpm_server(pwr_pin=17, res_pin=27, led_pin=22) -> BaseServer:
     @server.route("/power-on")
     def power_on():
         server.power_on()
-        return status()
+        return redirect("/")
 
     @server.route("/power-off")
     def power_off():
         server.power_off()
-        return status()
+        return redirect("/")
 
     @server.route("/reset")
     def reset():
         server.reset()
-        return status()
+        return redirect("/")
 
     return server
