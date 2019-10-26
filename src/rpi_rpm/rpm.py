@@ -9,6 +9,7 @@ from werkzeug.wrappers import Response
 
 class RemotePowerModule(BaseServer):
     def __init__(self, pwr_pin, res_pin, led_pin):
+        super().__init__()
         self._pwr_sw = DigitalOutputDevice(pwr_pin)
         self._res_sw = DigitalOutputDevice(res_pin)
         self._pwr_led = DigitalInputDevice(led_pin)
