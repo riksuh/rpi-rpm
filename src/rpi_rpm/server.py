@@ -17,10 +17,8 @@ class BaseServer():
 
     def route(self, location: str) -> Callable:
         def wrapper(func: Callable[[Optional[Request]], Response]):
-            func_name = func.__name__
-            if getattr(self, func_name, None) is None:
-                func_name = func.__name__ + "_callback"
-                setattr(self, func_name, func)
+            func_name = func.__name__ + "_callback"
+            setattr(self, func_name, func)
             rule = Rule(location, endpoint=func_name)
             self._routes.add(rule)
             return func

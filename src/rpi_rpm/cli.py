@@ -2,7 +2,7 @@ from werkzeug.serving import run_simple
 
 import click
 
-from . import wsgi_server
+from .rpm import create_rpm_server
 
 
 GLOBAL_CONTEXT_SETTINGS = {
@@ -25,5 +25,5 @@ def main():
               help="Reload the server if it detects changes to local files")
 def run(bind: str, debug: bool, reload: bool):
     hostname, delim, port = bind.partition(":")
-    run_simple(hostname, 8080 if len(port) == 0 else int(port), wsgi_server,
+    run_simple(hostname, 8080 if len(port) == 0 else int(port), create_rpm_server(),
                use_reloader=reload, use_debugger=debug)
